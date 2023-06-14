@@ -1,0 +1,453 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище TravelsDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="id_category" />
+          </Key>
+          <Property Name="id_category" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="id_city" />
+          </Key>
+          <Property Name="id_city" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="city" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Places">
+          <Key>
+            <PropertyRef Name="id_place" />
+          </Key>
+          <Property Name="id_place" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="place_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id_city" Type="int" Nullable="false" />
+          <Property Name="photo" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="id_role" />
+          </Key>
+          <Property Name="id_role" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="role" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Travel">
+          <Key>
+            <PropertyRef Name="id_trip" />
+          </Key>
+          <Property Name="id_trip" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_user" Type="int" Nullable="false" />
+          <Property Name="id_category" Type="int" Nullable="false" />
+          <Property Name="trip_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="start_date" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="end_date" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TravelPlaces">
+          <Key>
+            <PropertyRef Name="IdTravelPlaces" />
+          </Key>
+          <Property Name="IdTravelPlaces" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_travel" Type="int" Nullable="false" />
+          <Property Name="id_place" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_user" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="login" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="firstname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="lastname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id_role" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Places_Cities">
+          <End Role="Cities" Type="Self.Cities" Multiplicity="1" />
+          <End Role="Places" Type="Self.Places" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="id_city" />
+            </Principal>
+            <Dependent Role="Places">
+              <PropertyRef Name="id_city" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TravelPlaces_Places">
+          <End Role="Places" Type="Self.Places" Multiplicity="1" />
+          <End Role="TravelPlaces" Type="Self.TravelPlaces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Places">
+              <PropertyRef Name="id_place" />
+            </Principal>
+            <Dependent Role="TravelPlaces">
+              <PropertyRef Name="id_place" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TravelPlaces_Travel">
+          <End Role="Travel" Type="Self.Travel" Multiplicity="1" />
+          <End Role="TravelPlaces" Type="Self.TravelPlaces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Travel">
+              <PropertyRef Name="id_trip" />
+            </Principal>
+            <Dependent Role="TravelPlaces">
+              <PropertyRef Name="id_travel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trips_Categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="Travel" Type="Self.Travel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="id_category" />
+            </Principal>
+            <Dependent Role="Travel">
+              <PropertyRef Name="id_category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trips_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Travel" Type="Self.Travel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="Travel">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="id_role" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="id_role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище TravelsDBModelContainer">
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Places" EntityType="Self.Places" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Travel" EntityType="Self.Travel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TravelPlaces" EntityType="Self.TravelPlaces" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Places_Cities" Association="Self.FK_Places_Cities">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="Places" EntitySet="Places" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TravelPlaces_Places" Association="Self.FK_TravelPlaces_Places">
+            <End Role="Places" EntitySet="Places" />
+            <End Role="TravelPlaces" EntitySet="TravelPlaces" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TravelPlaces_Travel" Association="Self.FK_TravelPlaces_Travel">
+            <End Role="Travel" EntitySet="Travel" />
+            <End Role="TravelPlaces" EntitySet="TravelPlaces" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trips_Categories" Association="Self.FK_Trips_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Travel" EntitySet="Travel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trips_User" Association="Self.FK_Trips_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Travel" EntitySet="Travel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Roles" Association="Self.FK_Users_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TravelsDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TravelsDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="TravelsDBModel.Categories" />
+          <EntitySet Name="Cities" EntityType="TravelsDBModel.Cities" />
+          <EntitySet Name="Places" EntityType="TravelsDBModel.Places" />
+          <EntitySet Name="Roles" EntityType="TravelsDBModel.Roles" />
+          <EntitySet Name="Travel" EntityType="TravelsDBModel.Travel" />
+          <EntitySet Name="TravelPlaces" EntityType="TravelsDBModel.TravelPlaces" />
+          <EntitySet Name="Users" EntityType="TravelsDBModel.Users" />
+          <AssociationSet Name="FK_Trips_Categories" Association="TravelsDBModel.FK_Trips_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Travel" EntitySet="Travel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Places_Cities" Association="TravelsDBModel.FK_Places_Cities">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="Places" EntitySet="Places" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TravelPlaces_Places" Association="TravelsDBModel.FK_TravelPlaces_Places">
+            <End Role="Places" EntitySet="Places" />
+            <End Role="TravelPlaces" EntitySet="TravelPlaces" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Roles" Association="TravelsDBModel.FK_Users_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TravelPlaces_Travel" Association="TravelsDBModel.FK_TravelPlaces_Travel">
+            <End Role="Travel" EntitySet="Travel" />
+            <End Role="TravelPlaces" EntitySet="TravelPlaces" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trips_User" Association="TravelsDBModel.FK_Trips_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Travel" EntitySet="Travel" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="id_category" />
+          </Key>
+          <Property Name="id_category" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Travel" Relationship="TravelsDBModel.FK_Trips_Categories" FromRole="Categories" ToRole="Travel" />
+        </EntityType>
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="id_city" />
+          </Key>
+          <Property Name="id_city" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="city" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Places" Relationship="TravelsDBModel.FK_Places_Cities" FromRole="Cities" ToRole="Places" />
+        </EntityType>
+        <EntityType Name="Places">
+          <Key>
+            <PropertyRef Name="id_place" />
+          </Key>
+          <Property Name="id_place" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="place_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="id_city" Type="Int32" Nullable="false" />
+          <Property Name="photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Cities" Relationship="TravelsDBModel.FK_Places_Cities" FromRole="Places" ToRole="Cities" />
+          <NavigationProperty Name="TravelPlaces" Relationship="TravelsDBModel.FK_TravelPlaces_Places" FromRole="Places" ToRole="TravelPlaces" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="id_role" />
+          </Key>
+          <Property Name="id_role" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="role" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="TravelsDBModel.FK_Users_Roles" FromRole="Roles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Travel">
+          <Key>
+            <PropertyRef Name="id_trip" />
+          </Key>
+          <Property Name="id_trip" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_user" Type="Int32" Nullable="false" />
+          <Property Name="id_category" Type="Int32" Nullable="false" />
+          <Property Name="trip_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="start_date" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="end_date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Categories" Relationship="TravelsDBModel.FK_Trips_Categories" FromRole="Travel" ToRole="Categories" />
+          <NavigationProperty Name="TravelPlaces" Relationship="TravelsDBModel.FK_TravelPlaces_Travel" FromRole="Travel" ToRole="TravelPlaces" />
+          <NavigationProperty Name="Users" Relationship="TravelsDBModel.FK_Trips_User" FromRole="Travel" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="TravelPlaces">
+          <Key>
+            <PropertyRef Name="IdTravelPlaces" />
+          </Key>
+          <Property Name="IdTravelPlaces" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_travel" Type="Int32" Nullable="false" />
+          <Property Name="id_place" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Places" Relationship="TravelsDBModel.FK_TravelPlaces_Places" FromRole="TravelPlaces" ToRole="Places" />
+          <NavigationProperty Name="Travel" Relationship="TravelsDBModel.FK_TravelPlaces_Travel" FromRole="TravelPlaces" ToRole="Travel" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_user" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="login" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="firstname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="lastname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="id_role" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Roles" Relationship="TravelsDBModel.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
+          <NavigationProperty Name="Travel" Relationship="TravelsDBModel.FK_Trips_User" FromRole="Users" ToRole="Travel" />
+        </EntityType>
+        <Association Name="FK_Trips_Categories">
+          <End Type="TravelsDBModel.Categories" Role="Categories" Multiplicity="1" />
+          <End Type="TravelsDBModel.Travel" Role="Travel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="id_category" />
+            </Principal>
+            <Dependent Role="Travel">
+              <PropertyRef Name="id_category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Places_Cities">
+          <End Type="TravelsDBModel.Cities" Role="Cities" Multiplicity="1" />
+          <End Type="TravelsDBModel.Places" Role="Places" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="id_city" />
+            </Principal>
+            <Dependent Role="Places">
+              <PropertyRef Name="id_city" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TravelPlaces_Places">
+          <End Type="TravelsDBModel.Places" Role="Places" Multiplicity="1" />
+          <End Type="TravelsDBModel.TravelPlaces" Role="TravelPlaces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Places">
+              <PropertyRef Name="id_place" />
+            </Principal>
+            <Dependent Role="TravelPlaces">
+              <PropertyRef Name="id_place" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Roles">
+          <End Type="TravelsDBModel.Roles" Role="Roles" Multiplicity="1" />
+          <End Type="TravelsDBModel.Users" Role="Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="id_role" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="id_role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TravelPlaces_Travel">
+          <End Type="TravelsDBModel.Travel" Role="Travel" Multiplicity="1" />
+          <End Type="TravelsDBModel.TravelPlaces" Role="TravelPlaces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Travel">
+              <PropertyRef Name="id_trip" />
+            </Principal>
+            <Dependent Role="TravelPlaces">
+              <PropertyRef Name="id_travel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trips_User">
+          <End Type="TravelsDBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="TravelsDBModel.Travel" Role="Travel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id_user" />
+            </Principal>
+            <Dependent Role="Travel">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище TravelsDBModelContainer" CdmEntityContainer="TravelsDBEntities">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="TravelsDBModel.Categories">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="id_category" ColumnName="id_category" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="TravelsDBModel.Cities">
+              <MappingFragment StoreEntitySet="Cities">
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="id_city" ColumnName="id_city" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Places">
+            <EntityTypeMapping TypeName="TravelsDBModel.Places">
+              <MappingFragment StoreEntitySet="Places">
+                <ScalarProperty Name="photo" ColumnName="photo" />
+                <ScalarProperty Name="id_city" ColumnName="id_city" />
+                <ScalarProperty Name="place_name" ColumnName="place_name" />
+                <ScalarProperty Name="id_place" ColumnName="id_place" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="TravelsDBModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="id_role" ColumnName="id_role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Travel">
+            <EntityTypeMapping TypeName="TravelsDBModel.Travel">
+              <MappingFragment StoreEntitySet="Travel">
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="trip_name" ColumnName="trip_name" />
+                <ScalarProperty Name="id_category" ColumnName="id_category" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="id_trip" ColumnName="id_trip" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TravelPlaces">
+            <EntityTypeMapping TypeName="TravelsDBModel.TravelPlaces">
+              <MappingFragment StoreEntitySet="TravelPlaces">
+                <ScalarProperty Name="id_place" ColumnName="id_place" />
+                <ScalarProperty Name="id_travel" ColumnName="id_travel" />
+                <ScalarProperty Name="IdTravelPlaces" ColumnName="IdTravelPlaces" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="TravelsDBModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="id_role" ColumnName="id_role" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

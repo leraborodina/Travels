@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5037972feada42069cd383ab4ea5fd87" Name="Diagram1" ZoomLevel="53">
+        <EntityTypeShape EntityType="TravelsDBModel.Categories" Width="1.5" PointX="3" PointY="5.5" />
+        <EntityTypeShape EntityType="TravelsDBModel.Cities" Width="1.5" PointX="3" PointY="8.5" />
+        <EntityTypeShape EntityType="TravelsDBModel.Places" Width="1.5" PointX="5.25" PointY="8.25" />
+        <EntityTypeShape EntityType="TravelsDBModel.Roles" Width="1.5" PointX="0.75" PointY="1.5" />
+        <EntityTypeShape EntityType="TravelsDBModel.Travel" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="TravelsDBModel.TravelPlaces" Width="1.5" PointX="7.5" PointY="1.375" />
+        <EntityTypeShape EntityType="TravelsDBModel.Users" Width="1.5" PointX="3" PointY="1" />
+        <AssociationConnector Association="TravelsDBModel.FK_Trips_Categories" />
+        <AssociationConnector Association="TravelsDBModel.FK_Places_Cities" />
+        <AssociationConnector Association="TravelsDBModel.FK_TravelPlaces_Places" />
+        <AssociationConnector Association="TravelsDBModel.FK_Users_Roles" />
+        <AssociationConnector Association="TravelsDBModel.FK_TravelPlaces_Travel" />
+        <AssociationConnector Association="TravelsDBModel.FK_Trips_User" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
